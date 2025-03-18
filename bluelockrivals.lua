@@ -156,7 +156,7 @@ end
 local function waitForCharacter()
     if not player.Character or not player.Character:FindFirstChild("HumanoidRootPart") then
         player.CharacterAdded:Wait()
-        task.wait(1) -- Wait for character to fully load
+        task.wait(1)
     end
     return player.Character, player.Character:WaitForChild("HumanoidRootPart")
 end
@@ -394,7 +394,6 @@ local function autoBring()
         local root = character and character:FindFirstChild("HumanoidRootPart")
 
         if ball and root then
-            -- Instantly move the ball to the player's position
             local BV = Instance.new("BodyVelocity")
             BV.Velocity = (root.Position - ball.Position).Unit * 500
             BV.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
@@ -530,15 +529,12 @@ end
 local function autoJoinRandomTeam()
     while autoJoinRandomTeamEnabled do
         if not player.Team or player.Team.Name == "Visitor" then
-            -- Select random team and role
             local randomTeam = teams[math.random(1, #teams)]
             local randomRole = roles[math.random(1, #roles)]
             
-            -- Fire team selection remote
             local args = {randomTeam, randomRole}
             game:GetService("ReplicatedStorage").Packages.Knit.Services.TeamService.RE.Select:FireServer(unpack(args))
             
-            -- Wait to check if team join was successful
             local startTime = tick()
             repeat
                 task.wait(0.1)
@@ -552,7 +548,7 @@ local function antiAFK()
     while antiAFKEnabled do
         VirtualUser:CaptureController()
         VirtualUser:ClickButton2(Vector2.new())
-        task.wait(300) -- Wait 5 minutes between each anti-AFK action
+        task.wait(300)
     end
 end
 
@@ -563,11 +559,9 @@ player.Idled:Connect(function()
     end
 end)
 
--- Add team change detection
 player:GetPropertyChangedSignal("Team"):Connect(function()
     if player.Team then
         local teamName = player.Team.Name
-        -- Update UI based on current team
         if teamName ~= "Visitor" then
             autoJoinHomeEnabled = false
             autoJoinAwayEnabled = false
@@ -903,9 +897,9 @@ TeamTab:CreateToggle({
                     if player.Team and player.Team.Name == "Visitor" then
                         local args = {"Home", selectedRole or "CF"}
                         game:GetService("ReplicatedStorage").Packages.Knit.Services.TeamService.RE.Select:FireServer(unpack(args))
-                        task.wait(1) -- Short wait after attempting to join
+                        task.wait(1)
                     end
-                    task.wait(5) -- Check every 5 seconds if we're back in Visitor team
+                    task.wait(5)
                 end
             end)
         end
@@ -924,9 +918,9 @@ TeamTab:CreateToggle({
                     if player.Team and player.Team.Name == "Visitor" then
                         local args = {"Away", selectedRole or "CF"}
                         game:GetService("ReplicatedStorage").Packages.Knit.Services.TeamService.RE.Select:FireServer(unpack(args))
-                        task.wait(1) -- Short wait after attempting to join
+                        task.wait(1)
                     end
-                    task.wait(5) -- Check every 5 seconds if we're back in Visitor team
+                    task.wait(5)
                 end
             end)
         end
@@ -1036,7 +1030,6 @@ CharacterTab:CreateToggle({
     end
 })
 
--- Clean up connection when the script is destroyed
 game.Players.LocalPlayer.CharacterAdded:Connect(function()
     if connection then
         connection:Disconnect()
@@ -1104,16 +1097,7 @@ UITab:CreateButton({
         game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId)
     end
 })
-UITab:BuildThemeSection()
 
-
-UITab:BuildConfigSection()
-Luna:Notification({
-    Title = "Config Loaded",
-    Content = "Your saved configuration has been automatically loaded.",
-    Icon = "check_circle",
-    ImageSource = "Material"
-})
 game:GetService("RunService").Heartbeat:Connect(function()
     if hrp then
         if autoTPEnabled and ball then
