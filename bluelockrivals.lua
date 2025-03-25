@@ -1,3 +1,4 @@
+-- nel isagi
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local player = Players.LocalPlayer
@@ -1045,7 +1046,7 @@ StyleTab:CreateSection("Style Selection")
 StyleTab:CreateDropdown({
     Name = "Select Style",
     Options = {"Don Lorenzo", "Kunigami", "Aiku", "Karasu", "Otoya", "Bachira", "Chigiri", "Isagi", 
-              "Gagamaru", "King", "Nagi", "Rin", "Sae", "Shidou", "Reo", "Yukimiya", "Hiori"},
+              "Gagamaru", "King", "Nagi", "Rin", "Sae", "Shidou", "Reo", "Yukimiya", "Hiori", "NEL Isagi"},
     CurrentOption = {"Don Lorenzo"},
     MultipleOptions = false,
     Flag = "SelectStyle1",
